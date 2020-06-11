@@ -1,0 +1,6 @@
+*******************************************************************************************
+*	 										                                              *
+* Please type "find-best-route" and "Route from"-"Route To" ex.: find-best-route ABC-XYZ. *
+*                                                                                         *
+* Please type "help" to see all available commands.                                       *
+*******************************************************************************************
