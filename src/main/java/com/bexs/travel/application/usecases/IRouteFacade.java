@@ -1,4 +1,4 @@
-package com.bexs.travel.domain.services;
+package com.bexs.travel.application.usecases;
 
 import com.bexs.travel.application.usecases.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;

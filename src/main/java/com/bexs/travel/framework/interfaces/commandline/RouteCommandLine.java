@@ -1,6 +1,6 @@
 package com.bexs.travel.framework.interfaces.commandline;
 
-import com.bexs.travel.domain.services.IRouteFacade;
+import com.bexs.travel.application.usecases.IRouteFacade;
 import com.bexs.travel.framework.presenters.ITravelRoutePresenter;
 import com.bexs.travel.framework.requests.RouteRequest;
 import org.slf4j.Logger;

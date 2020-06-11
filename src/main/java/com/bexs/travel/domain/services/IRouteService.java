@@ -9,7 +9,7 @@ import java.util.List;
 public interface IRouteService {
     Route save(@NotNull final Route route);
 
-    TravelRoute findBestRoute(@NotNull String routeFrom, @NotNull String routeTo, @NotNull List<Route> routeList);
+    TravelRoute findBestRoute(@NotNull String routeFrom, @NotNull String routeTo);
 
     List<Route> findRouteFrom(@NotNull final String route);
 

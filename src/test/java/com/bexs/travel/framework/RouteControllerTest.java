@@ -4,7 +4,7 @@ import com.bexs.travel.application.usecases.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;
 import com.bexs.travel.domain.exceptions.RegisterAlreadyExistsException;
 import com.bexs.travel.domain.exceptions.RegisterNotFoundException;
-import com.bexs.travel.domain.services.RouteFacade;
+import com.bexs.travel.application.usecases.RouteFacade;
 import com.bexs.travel.framework.interfaces.rest.RouteController;
 import com.bexs.travel.framework.presenters.TravelRoutePresenter;
 import com.bexs.travel.framework.requests.RouteRequest;

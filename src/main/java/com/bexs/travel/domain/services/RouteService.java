@@ -2,6 +2,8 @@ package com.bexs.travel.domain.services;
 
 import com.bexs.travel.application.usecases.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;
+import com.bexs.travel.domain.exceptions.RegisterAlreadyExistsException;
+import com.bexs.travel.domain.exceptions.RegisterNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,9 @@ public class RouteService implements IRouteService {
     @Inject
     private IRouteRepository routeRepository;
 
+    private static final String ROUTE_FROM_NOT_FOUND_MESSAGE = "Route from [%s] not found";
+    private static final String ROUTE_TO_NOT_FOUND_MESSAGE = "Route to [%s] not found";
+
     public RouteService(@NotNull final IRouteRepository routeRepository) {
         this.routeRepository = routeRepository;
     }
@@ -26,6 +31,14 @@ public class RouteService implements IRouteService {
     @Override
     public Route save(@NotNull final Route route) {
         LOGGER.info("Saving route: {}", route);
+
+        List<Route> routeList = findRouteFromAndRouteTo(route.getRouteFrom(), route.getRouteTo());
+
+        if (!routeList.isEmpty()) {
+            LOGGER.warn("Route [{}-{}] already exists", route.getRouteFrom(), route.getRouteTo());
+            throw new RegisterAlreadyExistsException(String.format("Route [%s-%s] already exists", route.getRouteFrom(), route.getRouteTo()));
+        }
+
         return routeRepository.save(route);
     }
 
@@ -48,7 +61,15 @@ public class RouteService implements IRouteService {
     }
 
     @Override
-    public TravelRoute findBestRoute(@NotNull String routeFrom, @NotNull String routeTo, @NotNull List<Route> routeList) {
+    public TravelRoute findBestRoute(@NotNull String routeFrom, @NotNull String routeTo) {
+        LOGGER.info("Searching for the best route: {}-{}", routeFrom, routeTo);
+
+        // Find all routes from routeFrom
+        final List<Route> routeList = findRouteFrom(routeFrom);
+        // Find all routes from routeFrom
+        final List<Route> routeListTo = findRouteTo(routeTo);
+        // Validate if the routeFrom and routeTo exists
+        routeValidate(routeFrom, routeTo, routeList, routeListTo);
         // Initialize travel route to store final result with infinite max value.
         final TravelRoute travelRoute = new TravelRoute(Long.MAX_VALUE);
         // Initialize a linked list to store the routes
@@ -63,6 +84,11 @@ public class RouteService implements IRouteService {
             findBestRoute(routeList.get(i), linkedList, travelRoute, routeTo, 0L);
             // Clean up linked list
             linkedList = new LinkedList<>(Arrays.asList(routeFrom));
+        }
+
+        if (travelRoute.getRoute() == null) {
+            LOGGER.warn("Route [{}-{}] not found", routeFrom, routeTo);
+            throw new RegisterNotFoundException(String.format("Route [%s-%s] not found", routeFrom, routeTo));
         }
 
         return travelRoute;
@@ -93,6 +119,22 @@ public class RouteService implements IRouteService {
                 // Clean up linked list
                 linkedList = new LinkedList<>(Arrays.asList(linkedList.getFirst()));
             }
+        }
+    }
+
+    private void routeValidate(@NotNull final String routeFrom, @NotNull final String routeTo, @NotNull final List<Route> routeList, @NotNull final List<Route> routeListTo) {
+        LOGGER.info("Validating route: {}-{}", routeFrom, routeTo);
+
+        if (routeList.isEmpty()) {
+            String exceptionMessage = String.format(ROUTE_FROM_NOT_FOUND_MESSAGE, routeFrom);
+            LOGGER.warn("{}", exceptionMessage);
+            throw new RegisterNotFoundException(exceptionMessage);
+        }
+
+        if (routeListTo.isEmpty()) {
+            String exceptionMessage = String.format(ROUTE_TO_NOT_FOUND_MESSAGE, routeTo);
+            LOGGER.warn("{}", exceptionMessage);
+            throw new RegisterNotFoundException(exceptionMessage);
         }
     }
 
