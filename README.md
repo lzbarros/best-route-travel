@@ -125,7 +125,7 @@ Routes
 ```
 
 
-## Estrutura da aplicação
+## Estrutura de pacotes
 ```
 ./counter
 ├── com.bexs.travel
@@ -144,7 +144,7 @@ Routes
 │       └── requests
 ```
 
-## Estrutura da aplicação
+## Arquitetura/Design adotada
 
 A aplicação foi desenvolvida seguindo o modelo de arquitetura hexagonal, sendo assim a camada de domínio (core) está totalmente desacoplada 
 das interfaces (command line e rest (web)) e do repositório (fonte de dados).
