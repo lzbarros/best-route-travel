@@ -2,6 +2,8 @@ package com.bexs.travel.domain;
 
 import com.bexs.travel.application.usecases.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;
+import com.bexs.travel.domain.exceptions.RegisterAlreadyExistsException;
+import com.bexs.travel.domain.exceptions.RegisterNotFoundException;
 import com.bexs.travel.domain.services.IRouteRepository;
 import com.bexs.travel.domain.services.RouteService;
 import org.junit.Assert;
@@ -30,6 +32,18 @@ public class RouteServiceTest {
     public void shouldSaveARoute() {
         Route expectedRoute = new Route("FGD", "KJH", 10L);
         Mockito.when(this.routeRepository.save(ArgumentMatchers.any())).thenReturn(expectedRoute);
+
+        Route route = this.routeService.save(expectedRoute);
+
+        Assert.assertEquals(expectedRoute, route);
+    }
+
+    @Test(expected = RegisterAlreadyExistsException.class)
+    public void shouldNotSaveARoute() {
+        Route expectedRoute = new Route("FGD", "KJH", 10L);
+        List<Route> routeList = new ArrayList<>(Arrays.asList(expectedRoute));
+
+        Mockito.when(this.routeRepository.findRouteFromAndRouteTo(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(routeList);
 
         Route route = this.routeService.save(expectedRoute);
 
@@ -100,9 +114,11 @@ public class RouteServiceTest {
         String expectedRouteResult = "[FGD, HIJ, KJH]";
         Long expectedRouteValueResult = 20L;
 
+        Mockito.when(this.routeRepository.findRouteFrom("FGD")).thenReturn(new ArrayList<>(Arrays.asList(route1, route3)));
         Mockito.when(this.routeRepository.findRouteFrom("HIJ")).thenReturn(new ArrayList<>(Arrays.asList(route2)));
+        Mockito.when(this.routeRepository.findRouteTo("KJH")).thenReturn(new ArrayList<>(Arrays.asList(route1, route2)));
 
-        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH", new ArrayList<>(Arrays.asList(route1, route3)));
+        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH");
 
         Assert.assertEquals(expectedRouteResult, travelRoute.getRoute().toString());
         Assert.assertEquals(expectedRouteValueResult, travelRoute.getValue());
@@ -122,11 +138,14 @@ public class RouteServiceTest {
         String expectedRouteResult = "[GRU, BRC, SCL, ORL, CDG]";
         Long expectedRouteValueResult = 40L;
 
+        Mockito.when(this.routeRepository.findRouteFrom("GRU")).thenReturn(new ArrayList<>(Arrays.asList(route1, route3, route4, route5)));
         Mockito.when(this.routeRepository.findRouteFrom("BRC")).thenReturn(new ArrayList<>(Arrays.asList(route2)));
         Mockito.when(this.routeRepository.findRouteFrom("ORL")).thenReturn(new ArrayList<>(Arrays.asList(route6, route7)));
         Mockito.when(this.routeRepository.findRouteFrom("SCL")).thenReturn(new ArrayList<>(Arrays.asList(route8)));
 
-        TravelRoute travelRoute = this.routeService.findBestRoute("GRU", "CDG", new ArrayList<>(Arrays.asList(route1, route3, route4, route5)));
+        Mockito.when(this.routeRepository.findRouteTo("CDG")).thenReturn(new ArrayList<>(Arrays.asList(route3, route7)));
+
+        TravelRoute travelRoute = this.routeService.findBestRoute("GRU", "CDG");
 
         Assert.assertEquals(expectedRouteResult, travelRoute.getRoute().toString());
         Assert.assertEquals(expectedRouteValueResult, travelRoute.getValue());
@@ -139,9 +158,11 @@ public class RouteServiceTest {
         Route route3 = new Route("FGD", "HIJ", 10L);
         String expectedRouteResult = "[FGD, KJH]";
 
+        Mockito.when(this.routeRepository.findRouteFrom("FGD")).thenReturn(new ArrayList<>(Arrays.asList(route1, route3)));
         Mockito.when(this.routeRepository.findRouteFrom("HIJ")).thenReturn(new ArrayList<>(Arrays.asList(route2)));
+        Mockito.when(this.routeRepository.findRouteTo("KJH")).thenReturn(new ArrayList<>(Arrays.asList(route1, route2)));
 
-        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH", new ArrayList<>(Arrays.asList(route1, route3)));
+        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH");
 
         Assert.assertNotNull(expectedRouteResult, travelRoute.getRoute().toString());
     }
@@ -153,10 +174,49 @@ public class RouteServiceTest {
         Route route3 = new Route("FGD", "HIJ", 10L);
         Long expectedRouteValueResult = 75L;
 
+        Mockito.when(this.routeRepository.findRouteFrom("FGD")).thenReturn(new ArrayList<>(Arrays.asList(route1, route3)));
         Mockito.when(this.routeRepository.findRouteFrom("HIJ")).thenReturn(new ArrayList<>(Arrays.asList(route2)));
+        Mockito.when(this.routeRepository.findRouteTo("KJH")).thenReturn(new ArrayList<>(Arrays.asList(route1, route2)));
 
-        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH", new ArrayList<>(Arrays.asList(route1, route3)));
+        TravelRoute travelRoute = this.routeService.findBestRoute("FGD", "KJH");
 
         Assert.assertNotEquals(expectedRouteValueResult, travelRoute.getValue());
+    }
+
+    @Test(expected = RegisterNotFoundException.class)
+    public void shouldReturnRegisterNotFoundExceptionRouteFrom() {
+        Mockito.when(this.routeRepository.findRouteFrom("FGI")).thenReturn(new ArrayList<>());
+
+        this.routeService.findBestRoute("FGI", "KJH");
+
+        Assert.fail();
+    }
+
+    @Test(expected = RegisterNotFoundException.class)
+    public void shouldReturnRegisterNotFoundExceptionRouteTo() {
+        Route route1 = new Route("FGD", "ITA", 75L);
+
+        Mockito.when(this.routeRepository.findRouteFrom("FGD")).thenReturn(new ArrayList<>(Arrays.asList(route1)));
+        Mockito.when(this.routeRepository.findRouteTo("KJH")).thenReturn(new ArrayList<>());
+
+        this.routeService.findBestRoute("FGD", "KJH");
+
+        Assert.fail();
+    }
+
+    @Test(expected = RegisterNotFoundException.class)
+    public void shouldReturnRegisterNotFoundExceptionRouteFromAndTo() {
+        Route route1 = new Route("FGD", "ITA", 75L);
+        Route route2 = new Route("HIJ", "KJH", 10L);
+        Route route3 = new Route("FGD", "MAO", 10L);
+
+        List<Route> routeListTo = new ArrayList<>(Arrays.asList(route2));
+
+        Mockito.when(this.routeRepository.findRouteFrom("FGD")).thenReturn(new ArrayList<>(Arrays.asList(route1, route3)));
+        Mockito.when(this.routeRepository.findRouteTo(ArgumentMatchers.anyString())).thenReturn(routeListTo);
+
+        this.routeService.findBestRoute("FGD", "KJH");
+
+        Assert.fail();
     }
 }
