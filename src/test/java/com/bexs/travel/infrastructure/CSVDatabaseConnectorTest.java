@@ -1,9 +1,9 @@
-package com.bexs.travel.application;
+package com.bexs.travel.infrastructure;
 
-import com.bexs.travel.application.infrastructure.databaseconnector.CSVDatabaseConnector;
-import com.bexs.travel.application.infrastructure.datasource.IDataSource;
+import com.bexs.travel.infrastructure.databaseconnector.CSVDatabaseConnector;
+import com.bexs.travel.infrastructure.datasource.IDataSource;
 import com.bexs.travel.domain.entities.Route;
-import com.bexs.travel.domain.exceptions.DatabaseFailException;
+import com.bexs.travel.infrastructure.exceptions.DatabaseFailException;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,6 +1,6 @@
 package com.bexs.travel.application;
 
-import com.bexs.travel.application.infrastructure.databaseconnector.IDatabaseConnector;
+import com.bexs.travel.infrastructure.databaseconnector.IDatabaseConnector;
 import com.bexs.travel.domain.entities.Route;
 import com.bexs.travel.domain.services.RouteRepository;
 import org.junit.Assert;

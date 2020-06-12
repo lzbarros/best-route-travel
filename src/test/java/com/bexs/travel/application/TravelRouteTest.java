@@ -1,6 +1,6 @@
 package com.bexs.travel.application;
 
-import com.bexs.travel.application.usecases.vo.TravelRoute;
+import com.bexs.travel.domain.vo.TravelRoute;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;

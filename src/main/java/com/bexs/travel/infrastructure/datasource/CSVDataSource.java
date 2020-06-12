@@ -1,4 +1,4 @@
-package com.bexs.travel.application.infrastructure.datasource;
+package com.bexs.travel.infrastructure.datasource;
 
 import javax.inject.Named;
 import java.io.File;

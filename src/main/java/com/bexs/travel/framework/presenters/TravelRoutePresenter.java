@@ -1,6 +1,6 @@
 package com.bexs.travel.framework.presenters;
 
-import com.bexs.travel.application.usecases.vo.TravelRoute;
+import com.bexs.travel.domain.vo.TravelRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

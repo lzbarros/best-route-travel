@@ -1,6 +1,6 @@
 package com.bexs.travel.domain.services;
 
-import com.bexs.travel.application.usecases.vo.TravelRoute;
+import com.bexs.travel.domain.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;
 
 import javax.validation.constraints.NotNull;

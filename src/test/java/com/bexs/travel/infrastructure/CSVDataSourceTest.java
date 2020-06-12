@@ -1,6 +1,6 @@
-package com.bexs.travel.application;
+package com.bexs.travel.infrastructure;
 
-import com.bexs.travel.application.infrastructure.datasource.CSVDataSource;
+import com.bexs.travel.infrastructure.datasource.CSVDataSource;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

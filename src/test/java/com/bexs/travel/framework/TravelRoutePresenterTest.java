@@ -1,6 +1,6 @@
 package com.bexs.travel.framework;
 
-import com.bexs.travel.application.usecases.vo.TravelRoute;
+import com.bexs.travel.domain.vo.TravelRoute;
 import com.bexs.travel.framework.presenters.TravelRoutePresenter;
 import org.junit.Assert;
 import org.junit.Test;

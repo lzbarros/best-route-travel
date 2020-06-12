@@ -1,10 +1,8 @@
 package com.bexs.travel.application;
 
 import com.bexs.travel.application.usecases.RouteCase;
-import com.bexs.travel.application.usecases.vo.TravelRoute;
+import com.bexs.travel.domain.vo.TravelRoute;
 import com.bexs.travel.domain.entities.Route;
-import com.bexs.travel.domain.exceptions.RegisterAlreadyExistsException;
-import com.bexs.travel.domain.exceptions.RegisterNotFoundException;
 import com.bexs.travel.domain.services.IRouteService;
 import org.junit.Assert;
 import org.junit.Test;
