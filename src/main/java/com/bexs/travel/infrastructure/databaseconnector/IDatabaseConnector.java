@@ -1,4 +1,4 @@
-package com.bexs.travel.application.infrastructure.databaseconnector;
+package com.bexs.travel.infrastructure.databaseconnector;
 
 import com.bexs.travel.domain.entities.Route;
 

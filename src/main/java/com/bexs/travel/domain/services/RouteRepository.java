@@ -1,6 +1,6 @@
 package com.bexs.travel.domain.services;
 
-import com.bexs.travel.application.infrastructure.databaseconnector.IDatabaseConnector;
+import com.bexs.travel.infrastructure.databaseconnector.IDatabaseConnector;
 import com.bexs.travel.domain.entities.Route;
 
 import javax.inject.Inject;

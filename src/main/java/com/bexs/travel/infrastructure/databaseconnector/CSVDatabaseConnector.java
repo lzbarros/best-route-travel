@@ -1,8 +1,8 @@
-package com.bexs.travel.application.infrastructure.databaseconnector;
+package com.bexs.travel.infrastructure.databaseconnector;
 
-import com.bexs.travel.application.infrastructure.datasource.IDataSource;
+import com.bexs.travel.infrastructure.datasource.IDataSource;
 import com.bexs.travel.domain.entities.Route;
-import com.bexs.travel.domain.exceptions.DatabaseFailException;
+import com.bexs.travel.infrastructure.exceptions.DatabaseFailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

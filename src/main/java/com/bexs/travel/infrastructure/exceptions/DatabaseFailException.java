@@ -1,4 +1,4 @@
-package com.bexs.travel.domain.exceptions;
+package com.bexs.travel.infrastructure.exceptions;
 
 public class DatabaseFailException extends RuntimeException{
     public DatabaseFailException(String message) {

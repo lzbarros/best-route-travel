@@ -133,7 +133,6 @@ Routes
 ./counter
 ├── com.bexs.travel
 │   └── application
-│       ├── infrastructure
 │       ├── usecases
 │   └── domain
 │       ├── entities
@@ -145,6 +144,7 @@ Routes
 │	│   ├── rest
 │       ├── presenters
 │       └── requests
+│   └── infrastructure
 ```
 
 ## Arquitetura/Design adotada

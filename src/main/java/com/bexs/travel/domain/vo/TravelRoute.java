@@ -1,4 +1,4 @@
-package com.bexs.travel.application.usecases.vo;
+package com.bexs.travel.domain.vo;
 
 import java.util.Deque;
 import java.util.Objects;
