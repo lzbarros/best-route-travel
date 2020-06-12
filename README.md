@@ -1,5 +1,8 @@
 # Bexs Travel API
 
+## Sonar metrics
+![Alt text](sonar-metrics.png?raw=true "Sonar")
+
 ## Descrição
 Esse projeto tem como objetivo encontrar a rota mais econômica entre o ponto de partida ABC até o ponto de chegada XYZ.
 

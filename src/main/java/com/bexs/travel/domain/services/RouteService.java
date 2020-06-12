@@ -69,7 +69,7 @@ public class RouteService implements IRouteService {
         // Find all routes from routeFrom
         final List<Route> routeListTo = findRouteTo(routeTo);
         // Validate if the routeFrom and routeTo exists
-        routeValidate(routeFrom, routeTo, routeList, routeListTo);
+        routeValidation(routeFrom, routeTo, routeList, routeListTo);
         // Initialize travel route to store final result with infinite max value.
         final TravelRoute travelRoute = new TravelRoute(Long.MAX_VALUE);
         // Initialize a linked list to store the routes
@@ -78,8 +78,7 @@ public class RouteService implements IRouteService {
         // Loop the route list to find out the best route
         for (int i = 0; i < routeList.size(); i++) {
             // Verify if the value route is greater than the value already stored on travel route object (To avoid unnecessary loops)
-            if (isValueGreaterThan(routeList, travelRoute, i)) continue;
-
+            if (isValueGreaterThan(routeList.get(i).getValue(), travelRoute.getValue())) continue;
             // Find the best route to current value
             findBestRoute(routeList.get(i), linkedList, travelRoute, routeTo, 0L);
             // Clean up linked list
@@ -113,7 +112,7 @@ public class RouteService implements IRouteService {
             // Loop the route list to find out the best route (to routeTo)
             for (int i = 0; i < routeList.size(); i++) {
                 // Verify if the value route is greater than the value already stored on travel route object (To avoid unnecessary loops)
-                if (isValueGreaterThan(routeList, travelRoute, i)) continue;
+                if (isValueGreaterThan(routeList.get(i).getValue(), travelRoute.getValue())) continue;
                 // Find the best route to current value
                 findBestRoute(routeList.get(i), linkedList, travelRoute, finalRoute, value);
                 // Clean up linked list
@@ -122,7 +121,7 @@ public class RouteService implements IRouteService {
         }
     }
 
-    private void routeValidate(@NotNull final String routeFrom, @NotNull final String routeTo, @NotNull final List<Route> routeList, @NotNull final List<Route> routeListTo) {
+    private void routeValidation(@NotNull final String routeFrom, @NotNull final String routeTo, @NotNull final List<Route> routeList, @NotNull final List<Route> routeListTo) {
         LOGGER.info("Validating route: {}-{}", routeFrom, routeTo);
 
         if (routeList.isEmpty()) {
@@ -149,7 +148,7 @@ public class RouteService implements IRouteService {
         return routeList.stream().sorted(Comparator.comparingLong(Route::getValue)).collect(Collectors.toList());
     }
 
-    private boolean isValueGreaterThan(@NotNull List<Route> routeList, TravelRoute travelRoute, int i) {
-        return routeList.get(i).getValue() > travelRoute.getValue();
+    private boolean isValueGreaterThan(@NotNull Long value1, Long value2) {
+        return value1 > value2;
     }
 }
